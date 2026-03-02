@@ -52,7 +52,7 @@
     <p class="updated">Last updated: March 2026</p>
 
     <h2>Overview</h2>
-    <p>Stillpoint is designed with your privacy as a priority. The app does not collect, transmit, or share any personal data with third parties.</p>
+    <p>Stillpoint is designed with your privacy as a priority. Your personal data — journal entries, app selections, and session history — never leaves your device. The only data shared with a third party is anonymous crash information used solely to improve app stability.</p>
 
     <h2>Data Collected</h2>
     <p>All data created within Stillpoint — including your app selections, session history, journal reflections, and usage statistics — is stored exclusively on your device using Apple's SwiftData framework. Nothing leaves your device.</p>
@@ -60,8 +60,14 @@
     <h2>Screen Time & Family Controls</h2>
     <p>Stillpoint uses Apple's Screen Time API (FamilyControls framework) solely to monitor and shield apps you select. This data is managed entirely by iOS and is never accessible to us. We do not see, store, or transmit which apps you monitor.</p>
 
-    <h2>No Analytics or Tracking</h2>
-    <p>Stillpoint contains no analytics SDKs, crash reporting tools, advertising networks, or third-party trackers of any kind.</p>
+    <h2>Crash Reporting</h2>
+    <p>Stillpoint uses <strong>Firebase Crashlytics</strong> (provided by Google) to collect crash reports when the app unexpectedly closes. This helps us identify and fix bugs. Crashlytics may collect:</p>
+    <ul>
+      <li>Device type, iOS version, and app version</li>
+      <li>Crash logs and stack traces (no personal content)</li>
+      <li>A randomly generated installation UUID (not linked to your identity)</li>
+    </ul>
+    <p style="margin-top: 12px;">This data is sent to Google's servers and is governed by <a href="https://firebase.google.com/support/privacy" target="_blank">Google's Privacy Policy</a>. No journal content, app selections, or personally identifiable information is ever included in crash reports.</p>
 
     <h2>No Account Required</h2>
     <p>Stillpoint requires no account, login, or email address. There is no server-side component to this app.</p>
