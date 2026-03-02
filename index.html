@@ -4,102 +4,756 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Stillpoint — Mindful Pause</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream:   #FBF0DC;
+      --peach:   #F2C49B;
+      --coral:   #E8A07A;
+      --brown:   #3D2314;
+      --cocoa:   #6B3D2E;
+      --taupe:   #9C7B6A;
+      --glass-bg: rgba(255,255,255,0.28);
+      --glass-border: rgba(255,255,255,0.50);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(160deg, #F9E4B7 0%, #F2C97E 40%, #E8A87C 100%);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--brown);
+      overflow-x: hidden;
+    }
+
+    /* ── GRADIENT BACKGROUND ── */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%,  #FAE2C0 0%, transparent 65%),
+        radial-gradient(ellipse 60% 70% at 80% 20%,  #F5C9A0 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% 80%,  #EBA882 0%, transparent 60%),
+        radial-gradient(ellipse 100% 80% at 50% 50%, #F9E4C3 0%, #F0C49A 100%);
+    }
+
+    /* ── ORB ── */
+    .orb {
+      position: fixed;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #FAD4A0 0%, #F0A870 45%, #E88A5A 100%);
+      filter: blur(64px);
+      opacity: 0.45;
+      top: -120px;
+      right: -80px;
+      z-index: 0;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(-40px, 60px) scale(1.08); }
+    }
+
+    /* ── CONTENT WRAPPER ── */
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 32px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--brown);
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      color: var(--cocoa);
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+
+    .nav-link:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 0 100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-text { animation: fadeUp 0.9s ease both; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cocoa);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      padding: 6px 16px;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--coral);
+      display: inline-block;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 5.5vw, 5rem);
+      font-weight: 500;
+      line-height: 1.07;
+      letter-spacing: -0.01em;
+      color: var(--brown);
+      margin-bottom: 28px;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--cocoa);
+    }
+
+    .hero-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--cocoa);
+      max-width: 400px;
+      margin-bottom: 44px;
+      font-weight: 300;
+    }
+
+    .btn-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--brown);
+      color: var(--cream);
+      border: none;
+      border-radius: 50px;
+      padding: 16px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(61,35,20,0.20);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(61,35,20,0.28);
+    }
+
+    .btn-secondary {
+      font-size: 0.9rem;
+      color: var(--cocoa);
+      text-decoration: none;
+      font-weight: 400;
+      opacity: 0.75;
+      transition: opacity 0.2s;
+    }
+
+    .btn-secondary:hover { opacity: 1; }
+
+    /* ── PHONE MOCKUP ── */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      animation: fadeUp 0.9s 0.15s ease both;
+    }
+
+    .phone-wrap {
+      position: relative;
+      width: 280px;
+    }
+
+    .phone-frame {
+      width: 280px;
+      background: rgba(255,255,255,0.18);
+      border: 1.5px solid rgba(255,255,255,0.55);
+      border-radius: 44px;
+      padding: 14px;
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 32px 80px rgba(61,35,20,0.14),
+        0 2px 4px rgba(255,255,255,0.5) inset;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    .phone-inner {
+      border-radius: 34px;
+      overflow: hidden;
+      aspect-ratio: 9/19.5;
+      background: linear-gradient(160deg, #FAE5C5 0%, #F2C49B 50%, #E9A882 100%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 48px 24px;
-      color: #3D2314;
+      padding: 28px 24px;
+      text-align: center;
+      position: relative;
+    }
+
+    .phone-orb {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #FAD4A0, #F0A870 50%, #E88A5A);
+      filter: blur(18px);
+      opacity: 0.7;
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 0.7; }
+      50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; }
+    }
+
+    .phone-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--brown);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 60px;
+    }
+
+    .phone-pill {
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      padding: 12px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--brown);
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .phone-glow {
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -42%);
+    }
+
+    .phone-glow-2 {
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.22);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -42%);
+    }
+
+    /* floating badge */
+    .badge-float {
+      position: absolute;
+      right: -32px;
+      top: 28%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 0.78rem;
+      color: var(--brown);
+      font-weight: 500;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(61,35,20,0.10);
+      animation: float 6s 1s ease-in-out infinite;
+    }
+
+    .badge-float span { display: block; font-size: 1.1rem; margin-bottom: 2px; }
+
+    /* ── FEATURES ── */
+    .section-label {
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--taupe);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.15;
+      color: var(--brown);
+      margin-bottom: 64px;
+    }
+
+    .section-title em { font-style: italic; color: var(--cocoa); }
+
+    .features {
+      padding: 100px 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 28px;
-      padding: 56px 48px;
-      max-width: 520px;
-      width: 100%;
-      text-align: center;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      border-radius: 24px;
+      padding: 36px 32px;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .icon {
-      font-size: 56px;
-      margin-bottom: 24px;
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(61,35,20,0.10);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 20px;
       display: block;
     }
 
-    h1 {
-      font-size: 2.4rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--brown);
+      margin-bottom: 12px;
     }
 
-    .tagline {
-      font-size: 1.1rem;
-      opacity: 0.75;
-      margin-bottom: 32px;
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--cocoa);
+      font-weight: 300;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 100px 0;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 0;
+    }
+
+    .step {
+      text-align: center;
+    }
+
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 400;
+      color: var(--peach);
+      line-height: 1;
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .step h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--brown);
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--cocoa);
+      font-weight: 300;
+    }
+
+    /* ── QUOTE ── */
+    .quote-section {
+      padding: 80px 0;
+    }
+
+    .quote-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      border-radius: 28px;
+      padding: 64px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-card::before {
+      content: '"';
+      position: absolute;
+      top: -20px;
+      left: 40px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18rem;
+      color: rgba(255,255,255,0.35);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 400;
       font-style: italic;
+      line-height: 1.45;
+      color: var(--brown);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 24px;
     }
 
-    p {
-      font-size: 1rem;
-      line-height: 1.7;
-      opacity: 0.85;
-      margin-bottom: 40px;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #3D2314;
-      color: #F9E4B7;
-      padding: 14px 32px;
-      border-radius: 50px;
-      font-size: 1rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: opacity 0.2s;
-    }
-
-    .badge:hover { opacity: 0.85; }
-
-    footer {
-      margin-top: 40px;
+    cite {
       font-size: 0.85rem;
-      opacity: 0.6;
+      color: var(--taupe);
+      font-style: normal;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 80px 0 120px;
+      text-align: center;
+    }
+
+    .cta-card {
+      background: var(--brown);
+      border-radius: 32px;
+      padding: 80px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-orb {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #E8A070 0%, transparent 70%);
+      top: -100px;
+      right: -80px;
+      opacity: 0.3;
+    }
+
+    .cta-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+      line-height: 1.1;
+    }
+
+    .cta-card h2 em { font-style: italic; color: var(--peach); }
+
+    .cta-card p {
+      font-size: 1rem;
+      color: rgba(251,240,220,0.65);
+      margin-bottom: 44px;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-light {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--cream);
+      color: var(--brown);
+      border: none;
+      border-radius: 50px;
+      padding: 16px 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .btn-light:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 40px 32px;
+      font-size: 0.82rem;
+      color: var(--taupe);
+      display: flex;
+      justify-content: center;
+      gap: 32px;
     }
 
     footer a {
-      color: #3D2314;
-      text-decoration: underline;
+      color: var(--taupe);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--brown); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 48px; padding: 48px 0 72px; }
+      .hero-visual { order: -1; }
+      .phone-wrap { width: 220px; }
+      .phone-frame { width: 220px; }
+      .badge-float { display: none; }
+      .cards { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 40px; }
+      .quote-card { padding: 48px 32px; }
+      nav { padding: 24px 0; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <span class="icon">🌿</span>
-    <h1>Stillpoint</h1>
-    <p class="tagline">The moment between impulse and action.</p>
-    <p>
-      Stillpoint intercepts the urge to scroll by guiding you through a brief
-      mindfulness activity — a breathing exercise, guided imagery, or a moment
-      of reflection — before opening your chosen apps.
-    </p>
-    <a class="badge" href="#">Coming soon to the App Store</a>
+
+  <div class="bg"></div>
+  <div class="orb"></div>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">Stillpoint</span>
+    <a href="privacy.html" class="nav-link">Privacy</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-text">
+        <div class="eyebrow">Coming to iOS</div>
+        <h1>Reclaim your <em>headspace.</em></h1>
+        <p class="hero-body">
+          Before you open Instagram, TikTok, or any app you choose — Stillpoint
+          offers you a breath. A pause. A moment to return to yourself.
+        </p>
+        <div class="btn-row">
+          <a href="#" class="btn-primary">
+            Notify Me
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+          <a href="#how" class="btn-secondary">How it works →</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone-wrap">
+          <div class="phone-frame">
+            <div class="phone-inner">
+              <div class="phone-orb"></div>
+              <div class="phone-glow"></div>
+              <div class="phone-glow-2"></div>
+              <p class="phone-headline">Take a breath<br>before you browse.</p>
+              <div class="phone-pill">Start Morning Breathing</div>
+            </div>
+          </div>
+          <div class="badge-float">
+            <span>🌿</span>
+            3-day streak
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
+  <!-- FEATURES -->
+  <div class="wrap">
+    <section class="features reveal">
+      <p class="section-label">What awaits you</p>
+      <h2 class="section-title">A mindful moment,<br><em>three ways to pause.</em></h2>
+      <div class="cards">
+        <div class="card reveal">
+          <span class="card-icon">🫁</span>
+          <h3>Breathe</h3>
+          <p>Box breathing guides your nervous system to calm in under two minutes. Four counts in, four counts hold, four counts out.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-icon">☁️</span>
+          <h3>Visualise</h3>
+          <p>Guided imagery transports you to a peaceful scene — a forest, a shoreline — pulling your attention away from the scroll reflex.</p>
+        </div>
+        <div class="card reveal">
+          <span class="card-icon">📖</span>
+          <h3>Reflect</h3>
+          <p>A single journal prompt. A few sentences. Enough to notice how you're actually feeling before handing your attention away.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="wrap">
+    <section class="how reveal" id="how">
+      <p class="section-label">How it works</p>
+      <h2 class="section-title">Simple as a<br><em>single breath.</em></h2>
+      <div class="steps">
+        <div class="step reveal">
+          <span class="step-num">01</span>
+          <h4>Choose your apps</h4>
+          <p>Select which apps you want to be mindful about. Instagram, TikTok, X — any app you choose.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">02</span>
+          <h4>Stillpoint intercepts</h4>
+          <p>When you open a selected app, Stillpoint appears first — gently, without judgment.</p>
+        </div>
+        <div class="step reveal">
+          <span class="step-num">03</span>
+          <h4>Pause, then proceed</h4>
+          <p>Complete a brief activity, earn a pass, and open your app with intention — or choose not to.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="wrap">
+    <section class="quote-section reveal">
+      <div class="quote-card">
+        <blockquote>
+          "Between stimulus and response<br>there is a space. In that space<br>is our power to choose."
+        </blockquote>
+        <cite>— Viktor E. Frankl</cite>
+      </div>
+    </section>
+  </div>
+
+  <!-- CTA -->
+  <div class="wrap">
+    <section class="cta-section reveal">
+      <div class="cta-card">
+        <div class="cta-orb"></div>
+        <h2>The pause is<br><em>already there.</em></h2>
+        <p>Stillpoint is coming to iOS. Be the first to know.</p>
+        <a href="mailto:andres@andresvidal.com?subject=Notify me about Stillpoint" class="btn-light">
+          Get Early Access
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
   <footer>
+    <span>© 2026 Stillpoint</span>
     <a href="privacy.html">Privacy Policy</a>
   </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } }),
+      { threshold: 0.12 }
+    );
+    reveals.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
